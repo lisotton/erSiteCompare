@@ -227,8 +227,9 @@ class siteCompare(object):
 				self.driver = webdriver.Firefox(fp)
 			else:
 				self.driver = webdriver.Firefox()
-			self.driver.implicitly_wait(30)
+			self.driver.implicitly_wait(1)
 			self.driver.maximize_window()
+			self.driver.set_page_load_timeout(30)
 		except WebDriverException, e:
 			raise e
 
@@ -251,8 +252,9 @@ class siteCompare(object):
 				self.driver = webdriver.Firefox(fp)
 			else:
 				self.driver = webdriver.Firefox()
-			self.driver.implicitly_wait(30)
+			self.driver.implicitly_wait(1)
 			self.driver.maximize_window()
+			self.driver.set_page_load_timeout(30)
 		except WebDriverException, e:
 			raise e
 
@@ -291,23 +293,23 @@ class siteCompare(object):
 		elements = self.driver.find_elements_by_xpath("//a|//area|//iframe|//frame")
 		if elements:
 			for el in elements:
-				key = 'href'
-				if ('frame' == el.tag_name or 'iframe' == el.tag_name):
-					key = 'src'
-				link = el.get_attribute(key)
-				if not link:
-					continue
-				logging.info('Find link [%s].', link)
-				link = link.lower()
-				if (str(link)[0:4] == 'http'):
-					self.appendLinks(link)
+			  key = 'href'
+			  if ('frame' == el.tag_name or 'iframe' == el.tag_name):
+				  key = 'src'
+			  link = el.get_attribute(key)
+			  if not link:
+				  continue
+			  logging.info('Find link [%s].', link)
+			  link = link.lower()
+			  if (str(link)[0:4] == 'http'):
+				  self.appendLinks(link)
 
 	def getLinks(self, url):
 		print "Processing %s" % (url)
 		try:
 			self.driver.get(url)
 			self.prepareLinks()
-		except TimeoutException, e:
+		except:
 			print 'Link [%s] connection time out.' % url
 			logging.error('Link [%s] connection time out.', url)
 
